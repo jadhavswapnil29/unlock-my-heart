@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Unlock My Heart ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at top, #1a1a2e, #000);
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+    color: #fff;
+}
+
+/* ---------- PASSCODE ---------- */
+#lockScreen {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, #2c2c54, #000);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#lockScreen h1 { margin-bottom: 20px; }
+
+#lockScreen input {
+    width: 220px;
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    text-align: center;
+    outline: none;
+}
+
+#lockScreen button {
+    margin-top: 20px;
+    padding: 12px 32px;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #ff4d6d, #ff758f);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255,77,109,0.6);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#lockScreen button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255,77,109,0.9);
+}
+
+/* ---------- STORY ---------- */
+#story {
+    display: none;
+    height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.slide.active { opacity: 1; }
+
+.overlay {
+    position: absolute;
+    bottom: 90px;
+    left: 20px;
+    right: 20px;
+    font-size: 22px;
+    text-shadow: 0 0 20px rgba(255,255,255,0.4);
+}
+
+.swipeHint {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    text-align: center;
+    opacity: 0.7;
+}
+
+/* ---------- CANDLES ---------- */
+.candle {
+    position: absolute;
+    bottom: 0;
+    width: 6px;
+    height: 60px;
+    background: #ffddaa;
+    animation: flicker 1s infinite alternate;
+}
+
+.candle:nth-child(1) { left: 10%; }
+.candle:nth-child(2) { left: 80%; }
+
+.candle::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: -6px;
+    width: 18px;
+    height: 18px;
+    background: radial-gradient(circle, #ffb703, transparent);
+    border-radius: 50%;
+}
+
+@keyframes flicker {
+    from { opacity: 0.7; }
+    to { opacity: 1; }
+}
+
+/* ---------- PROPOSAL ---------- */
+#proposal {
+    display: none;
+    position: relative;
+    inset: 0;
+    background: radial-gradient(circle, #1b1b3a, #000);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.heart {
+    font-size: 70px;
+    animation: beat 1.2s infinite;
+}
+
+@keyframes beat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+#proposal h1 {
+    font-size: 36px;
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px pink; }
+    to { text-shadow: 0 0 30px hotpink; }
+}
+
+/* ---------- BUTTONS ---------- */
+.buttons {
+    margin-top: 30px;
+    position: relative;
+    width: 300px;
+    height: 80px;
+}
+
+button {
+    border: none;
+    border-radius: 30px;
+    font-size: 18px;
+    padding: 12px 28px;
+    cursor: pointer;
+}
+
+button.yes {
+    background: #ff4d6d;
+    color: #fff;
+    position: absolute;
+    left: 0;
+}
+
+button.no {
+    background: #444;
+    color: #fff;
+    position: absolute;
+    right: 0;
+}
+
+/* ---------- CONFETTI ---------- */
+.confetti {
+    position: fixed;
+    width: 8px;
+    height: 14px;
+    top: -20px;
+    animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* ---------- FIREWORKS ---------- */
+.firework {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: gold;
+    border-radius: 50%;
+    animation: explode 1.5s ease-out forwards;
+}
+
+@keyframes explode {
+    to {
+        transform: translate(var(--x), var(--y)) scale(0);
+        opacity: 0;
+    }
+}
+
+.name {
+    font-size: 42px;
+    color: hotpink;
+}
+
+.letter {
+    max-width: 320px;
+    font-size: 20px;
+    line-height: 1.6;
+    margin-top: 20px;
+    white-space: pre-wrap;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🔒 PASSCODE -->
+<div id="lockScreen">
+    <h1>🔒 Enter the secret code</h1>
+    <input type="password" id="code" placeholder="❤️ ❤️ ❤️">
+    <button onclick="unlock()">Unlock</button>
+</div>
+
+<!-- 🎶 MUSIC -->
+<audio id="music" loop>
+    <source src="https://cdn.pixabay.com/audio/2022/10/25/audio_946b5e58d1.mp3">
+</audio>
+
+<!-- 💖 STORY -->
+<div id="story" onclick="nextSlide()">
+    <div class="slide active" style="background-image:url('https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e')"></div>
+    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1')"></div>
+    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1529333166437-7750a6dd5a70')"></div>
+    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1517841905240-472988babdf9')"></div>
+
+    <div class="overlay" id="text"></div>
+    <div class="swipeHint">👉 Tap or Swipe</div>
+
+    <div class="candle"></div>
+    <div class="candle"></div>
+</div>
+
+<!-- 💍 PROPOSAL -->
+<div id="proposal">
+    <div class="heart">💖</div>
+    <h1>Will You Be My Valentine?</h1>
+    <p>Today, tomorrow, and always 💍</p>
+
+    <div class="buttons">
+        <button class="yes" onclick="sayYes()">Yes 💕</button>
+        <button class="no" id="noBtn">No 🙈</button>
+    </div>
+</div>
+
+<script>
+const PASSCODE = "143";
+const messages = [
+    "Every heartbeat of mine whispers your name ❤️",
+    "In this quiet night, my world lights up because of you 🕯",
+    "Every moment with you feels magical ✨",
+    "There’s only one thing left to ask… 💕"
+];
+
+let index = 0;
+let startX = 0;
+
+const slides = document.querySelectorAll(".slide");
+const text = document.getElementById("text");
+const story = document.getElementById("story");
+const proposal = document.getElementById("proposal");
+const noBtn = document.getElementById("noBtn");
+
+text.innerText = messages[0];
+
+function unlock() {
+    const codeInput = document.getElementById("code");
+    if (codeInput.value === PASSCODE) {
+        document.getElementById("lockScreen").style.display = "none";
+        story.style.display = "block";
+        document.getElementById("music").play();
+    } else {
+        alert("Wrong code 💔");
+        codeInput.value = "";
+        codeInput.focus();
+    }
+}
+
+document.getElementById("code").addEventListener("keydown", e => {
+    if (e.key === "Enter") unlock();
+});
+
+story.addEventListener("touchstart", e => startX = e.touches[0].clientX);
+story.addEventListener("touchend", e => {
+    if (startX - e.changedTouches[0].clientX > 50) nextSlide();
+});
+
+function nextSlide() {
+    index++;
+    if (index < slides.length) {
+        slides.forEach(s => s.classList.remove("active"));
+        slides[index].classList.add("active");
+        text.innerText = messages[index];
+    } else {
+        story.style.display = "none";
+        proposal.style.display = "flex";
+    }
+}
+
+function moveButton() {
+    const box = proposal.getBoundingClientRect();
+    noBtn.style.left = Math.random() * (box.width - 120) + "px";
+    noBtn.style.top = Math.random() * (box.height - 120) + "px";
+}
+
+noBtn.addEventListener("mouseover", moveButton);
+noBtn.addEventListener("click", moveButton);
+
+function launchConfetti() {
+    for (let i = 0; i < 120; i++) {
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.background = `hsl(${Math.random()*360},100%,60%)`;
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 4000);
+    }
+}
+
+function fireworks() {
+    for (let i = 0; i < 60; i++) {
+        const f = document.createElement("div");
+        f.className = "firework";
+        f.style.left = "50vw";
+        f.style.top = "50vh";
+        f.style.setProperty("--x", (Math.random()*400 - 200) + "px");
+        f.style.setProperty("--y", (Math.random()*400 - 200) + "px");
+        document.body.appendChild(f);
+        setTimeout(() => f.remove(), 2000);
+    }
+}
+
+function typeText(el, text) {
+    let i = 0;
+    const timer = setInterval(() => {
+        el.innerHTML += text[i++];
+        if (i >= text.length) clearInterval(timer);
+    }, 50);
+}
+
+function sayYes() {
+    launchConfetti();
+    fireworks();
+
+    proposal.innerHTML = `
+        <div class="heart">💘</div>
+        <h1>She Said YES!!!</h1>
+        <div class="name">💖 Your Name Here 💖</div>
+        <div class="letter" id="loveLetter"></div>
+    `;
+
+    typeText(
+        document.getElementById("loveLetter"),
+`From the moment you came into my life,
+everything felt warmer, brighter, better.
+
+This is not just a Valentine…
+It’s my heart choosing you,
+again and again, forever 💍❤️`
+    );
+}
+</script>
+
+</body>
+</html>
