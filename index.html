@@ -28,8 +28,6 @@ body {
     flex-direction: column;
 }
 
-#lockScreen h1 { margin-bottom: 20px; }
-
 #lockScreen input {
     width: 220px;
     padding: 12px;
@@ -50,224 +48,189 @@ body {
     color: #fff;
     cursor: pointer;
     box-shadow: 0 0 15px rgba(255,77,109,0.6);
-    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-#lockScreen button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(255,77,109,0.9);
+/* ---------- ERROR + HINT ---------- */
+#errorMsg, #hintMsg {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    border-radius: 30px;
+    display: none;
+    z-index: 9999;
 }
+
+#errorMsg {
+    top: 20px;
+    background: rgba(255,77,109,0.95);
+}
+
+#hintMsg {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    min-width: 300px;      /* ⬅️ increased size */
+    max-width: 90%;
+    padding: 18px 26px;    /* ⬅️ more breathing room */
+
+    font-size: 20px;       /* ⬅️ bigger text */
+    text-align: center;
+    line-height: 1.4;
+
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+
+    border-radius: 28px;
+    box-shadow: 0 0 22px rgba(255,105,180,0.6);
+
+    display: none;
+    z-index: 9999;
+}
+
+
+/* ---------- SHAKE ---------- */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    50% { transform: translateX(6px); }
+    75% { transform: translateX(-6px); }
+    100% { transform: translateX(0); }
+}
+.shake { animation: shake 0.4s; }
 
 /* ---------- STORY ---------- */
-#story {
-    display: none;
-    height: 100vh;
-    width: 100%;
-    position: relative;
-}
-
+#story { display:none; height:100vh; }
 .slide {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    transition: opacity 1s ease;
+    position:absolute; inset:0;
+    background-size:cover;
+    background-position:center;
+    opacity:0; transition:1s;
 }
-
-.slide.active { opacity: 1; }
+.slide.active { opacity:1; }
 
 .overlay {
-    position: absolute;
-    bottom: 90px;
-    left: 20px;
-    right: 20px;
-    font-size: 22px;
-    text-shadow: 0 0 20px rgba(255,255,255,0.4);
+    position:absolute;
+    bottom:90px;
+    left:20px;
+    right:20px;
+    font-size:22px;
 }
 
 .swipeHint {
-    position: absolute;
-    bottom: 30px;
-    width: 100%;
-    text-align: center;
-    opacity: 0.7;
-}
-
-/* ---------- CANDLES ---------- */
-.candle {
-    position: absolute;
-    bottom: 0;
-    width: 6px;
-    height: 60px;
-    background: #ffddaa;
-    animation: flicker 1s infinite alternate;
-}
-
-.candle:nth-child(1) { left: 10%; }
-.candle:nth-child(2) { left: 80%; }
-
-.candle::before {
-    content: "";
-    position: absolute;
-    top: -12px;
-    left: -6px;
-    width: 18px;
-    height: 18px;
-    background: radial-gradient(circle, #ffb703, transparent);
-    border-radius: 50%;
-}
-
-@keyframes flicker {
-    from { opacity: 0.7; }
-    to { opacity: 1; }
+    position:absolute;
+    bottom:30px;
+    width:100%;
+    text-align:center;
+    opacity:.7;
 }
 
 /* ---------- PROPOSAL ---------- */
 #proposal {
-    display: none;
-    position: relative;
-    inset: 0;
+    display:none;
+    position:absolute;
+    inset:0;
     background: radial-gradient(circle, #1b1b3a, #000);
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
 }
 
 .heart {
-    font-size: 70px;
+    font-size:70px;
     animation: beat 1.2s infinite;
 }
+@keyframes beat { 50% { transform:scale(1.2); } }
 
-@keyframes beat {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
-
-#proposal h1 {
-    font-size: 36px;
-    animation: glow 2s infinite alternate;
-}
-
-@keyframes glow {
-    from { text-shadow: 0 0 10px pink; }
-    to { text-shadow: 0 0 30px hotpink; }
-}
-
-/* ---------- BUTTONS ---------- */
 .buttons {
-    margin-top: 30px;
-    position: relative;
-    width: 300px;
-    height: 80px;
-}
-
-button {
-    border: none;
-    border-radius: 30px;
-    font-size: 18px;
-    padding: 12px 28px;
-    cursor: pointer;
+    margin-top:30px;
+    width:300px;
+    height:80px;
+    position:relative;
 }
 
 button.yes {
-    background: #ff4d6d;
-    color: #fff;
-    position: absolute;
-    left: 0;
+    background:#ff4d6d;
+    color:#fff;
+    border:none;
+    padding:12px 28px;
+    border-radius:30px;
+    position:absolute;
+    left:0;
 }
-
 button.no {
-    background: #444;
-    color: #fff;
-    position: absolute;
-    right: 0;
+    background:#444;
+    color:#fff;
+    border:none;
+    padding:12px 28px;
+    border-radius:30px;
+    position:absolute;
+    right:0;
 }
 
-/* ---------- CONFETTI ---------- */
+/* ---------- EFFECTS ---------- */
 .confetti {
-    position: fixed;
-    width: 8px;
-    height: 14px;
-    top: -20px;
+    position:fixed;
+    width:8px;
+    height:14px;
+    top:-20px;
     animation: fall 3s linear forwards;
 }
-
 @keyframes fall {
-    to {
-        transform: translateY(110vh) rotate(720deg);
-        opacity: 0;
-    }
+    to { transform: translateY(110vh) rotate(720deg); opacity:0; }
 }
 
-/* ---------- FIREWORKS ---------- */
 .firework {
-    position: fixed;
-    width: 6px;
-    height: 6px;
-    background: gold;
-    border-radius: 50%;
-    animation: explode 1.5s ease-out forwards;
+    position:fixed;
+    width:6px;
+    height:6px;
+    background:gold;
+    border-radius:50%;
+    animation: explode 1.5s forwards;
 }
-
 @keyframes explode {
-    to {
-        transform: translate(var(--x), var(--y)) scale(0);
-        opacity: 0;
-    }
+    to { transform: translate(var(--x),var(--y)) scale(0); opacity:0; }
 }
 
-.name {
-    font-size: 42px;
-    color: hotpink;
-}
-
-.letter {
-    max-width: 320px;
-    font-size: 20px;
-    line-height: 1.6;
-    margin-top: 20px;
-    white-space: pre-wrap;
-}
+.name { font-size:42px; color:hotpink; }
+.letter { max-width:320px; font-size:20px; line-height:1.6; }
 </style>
 </head>
 
 <body>
 
-<!-- 🔒 PASSCODE -->
+<div id="errorMsg">Wrong code 💔</div>
+<div id="hintMsg">💡 Hint: Two birthdays, one heart (Mine + Your's)❤️</div>
+
+<!-- 🔒 LOCK -->
 <div id="lockScreen">
     <h1>🔒 Enter the secret code</h1>
     <input type="password" id="code" placeholder="❤️ ❤️ ❤️">
-    <button onclick="unlock()">Unlock</button>
+    <button id="unlockBtn" onclick="unlock()">Unlock</button>
 </div>
 
-<!-- 🎶 MUSIC -->
 <audio id="music" loop>
-    <source src="https://cdn.pixabay.com/audio/2022/10/25/audio_946b5e58d1.mp3">
+<source src="https://cdn.pixabay.com/audio/2022/10/25/audio_946b5e58d1.mp3">
 </audio>
 
-<!-- 💖 STORY -->
+<!-- STORY -->
 <div id="story" onclick="nextSlide()">
-    <div class="slide active" style="background-image:url('https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e')"></div>
-    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1')"></div>
-    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1529333166437-7750a6dd5a70')"></div>
-    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1517841905240-472988babdf9')"></div>
-
+    <div class="slide active" style="background-image:url('images/suppu_1.jpg')"></div>
+    <div class="slide" style="background-image:url('images/suppu_2.jpg')"></div>
+    <div class="slide" style="background-image:url('images/suppu_3.jpg')"></div>
+    <div class="slide" style="background-image:url('images/suppu_4.jpg')"></div>
     <div class="overlay" id="text"></div>
     <div class="swipeHint">👉 Tap or Swipe</div>
-
-    <div class="candle"></div>
-    <div class="candle"></div>
 </div>
 
-<!-- 💍 PROPOSAL -->
+<!-- PROPOSAL -->
 <div id="proposal">
     <div class="heart">💖</div>
     <h1>Will You Be My Valentine?</h1>
     <p>Today, tomorrow, and always 💍</p>
-
     <div class="buttons">
         <button class="yes" onclick="sayYes()">Yes 💕</button>
         <button class="no" id="noBtn">No 🙈</button>
@@ -275,122 +238,104 @@ button.no {
 </div>
 
 <script>
-const PASSCODE = "143";
-const messages = [
-    "Every heartbeat of mine whispers your name ❤️",
-    "In this quiet night, my world lights up because of you 🕯",
-    "Every moment with you feels magical ✨",
-    "There’s only one thing left to ask… 💕"
-];
-
-let index = 0;
-let startX = 0;
-
-const slides = document.querySelectorAll(".slide");
-const text = document.getElementById("text");
-const story = document.getElementById("story");
-const proposal = document.getElementById("proposal");
-const noBtn = document.getElementById("noBtn");
-
-text.innerText = messages[0];
+const PASSCODE = "2928";
+let attempts = 0;
 
 function unlock() {
-    const codeInput = document.getElementById("code");
-    if (codeInput.value === PASSCODE) {
+    const code = document.getElementById("code");
+    const error = document.getElementById("errorMsg");
+    const hint = document.getElementById("hintMsg");
+    const btn = document.getElementById("unlockBtn");
+
+    if (code.value === PASSCODE) {
         document.getElementById("lockScreen").style.display = "none";
-        story.style.display = "block";
+        document.getElementById("story").style.display = "block";
         document.getElementById("music").play();
-    } else {
-        alert("Wrong code 💔");
-        codeInput.value = "";
-        codeInput.focus();
+		hint.style.display="none"
+        return;
     }
+
+    attempts++;
+    if (navigator.vibrate) navigator.vibrate(200);
+
+    code.classList.add("shake");
+    setTimeout(()=>code.classList.remove("shake"),400);
+
+    error.style.display="block";
+    setTimeout(()=>error.style.display="none",2000);
+
+    if (attempts === 3) hint.style.display="block";
+
+    if (attempts >= 5) {
+        btn.disabled = true;
+        btn.textContent = "Try harder 😉";
+        setTimeout(()=>{
+            btn.disabled=false;
+            btn.textContent="Unlock";
+        },3000);
+    }
+
+    code.value="";
+    code.focus();
 }
 
-document.getElementById("code").addEventListener("keydown", e => {
-    if (e.key === "Enter") unlock();
-});
+/* STORY */
+const slides=document.querySelectorAll(".slide");
+const text=document.getElementById("text");
+const messages=[
+"Every heartbeat of mine whispers your name ❤️",
+"In this quiet night, my world lights up because of you 🕯",
+"Every moment with you feels magical ✨",
+"There’s only one thing left to ask… 💕"
+];
+let index=0;
+text.innerText=messages[0];
 
-story.addEventListener("touchstart", e => startX = e.touches[0].clientX);
-story.addEventListener("touchend", e => {
-    if (startX - e.changedTouches[0].clientX > 50) nextSlide();
-});
-
-function nextSlide() {
+function nextSlide(){
     index++;
-    if (index < slides.length) {
-        slides.forEach(s => s.classList.remove("active"));
+    if(index<slides.length){
+        slides.forEach(s=>s.classList.remove("active"));
         slides[index].classList.add("active");
-        text.innerText = messages[index];
+        text.innerText=messages[index];
     } else {
-        story.style.display = "none";
-        proposal.style.display = "flex";
+        document.getElementById("story").style.display="none";
+        document.getElementById("proposal").style.display="flex";
     }
 }
 
-function moveButton() {
-    const box = proposal.getBoundingClientRect();
-    noBtn.style.left = Math.random() * (box.width - 120) + "px";
-    noBtn.style.top = Math.random() * (box.height - 120) + "px";
-}
+/* NO BUTTON */
+const noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("mouseover",()=> {
+    noBtn.style.left=Math.random()*200+"px";
+    noBtn.style.top=Math.random()*60+"px";
+});
 
-noBtn.addEventListener("mouseover", moveButton);
-noBtn.addEventListener("click", moveButton);
-
-function launchConfetti() {
-    for (let i = 0; i < 120; i++) {
-        const c = document.createElement("div");
-        c.className = "confetti";
-        c.style.left = Math.random() * 100 + "vw";
-        c.style.background = `hsl(${Math.random()*360},100%,60%)`;
+/* YES */
+function sayYes(){
+    for(let i=0;i<120;i++){
+        const c=document.createElement("div");
+        c.className="confetti";
+        c.style.left=Math.random()*100+"vw";
+        c.style.background=`hsl(${Math.random()*360},100%,60%)`;
         document.body.appendChild(c);
-        setTimeout(() => c.remove(), 4000);
+        setTimeout(()=>c.remove(),4000);
     }
-}
 
-function fireworks() {
-    for (let i = 0; i < 60; i++) {
-        const f = document.createElement("div");
-        f.className = "firework";
-        f.style.left = "50vw";
-        f.style.top = "50vh";
-        f.style.setProperty("--x", (Math.random()*400 - 200) + "px");
-        f.style.setProperty("--y", (Math.random()*400 - 200) + "px");
-        document.body.appendChild(f);
-        setTimeout(() => f.remove(), 2000);
-    }
-}
+    document.getElementById("proposal").innerHTML=`
+    <div class="heart">💘</div>
+    <h1>She Said YES!!!</h1>
+    <div class="name">💖 Suppu 💖</div>
+    <div class="letter">
+    From the moment you came into my life,
+    everything felt warmer, brighter, better.
 
-function typeText(el, text) {
-    let i = 0;
-    const timer = setInterval(() => {
-        el.innerHTML += text[i++];
-        if (i >= text.length) clearInterval(timer);
-    }, 50);
-}
-
-function sayYes() {
-    launchConfetti();
-    fireworks();
-
-    proposal.innerHTML = `
-        <div class="heart">💘</div>
-        <h1>She Said YES!!!</h1>
-        <div class="name">💖 Your Name Here 💖</div>
-        <div class="letter" id="loveLetter"></div>
-    `;
-
-    typeText(
-        document.getElementById("loveLetter"),
-`From the moment you came into my life,
-everything felt warmer, brighter, better.
-
-This is not just a Valentine…
-It’s my heart choosing you,
-again and again, forever 💍❤️`
-    );
+    This is not just a Valentine…
+    It’s my heart choosing you,
+    again and again, forever 💍❤️
+    </div>`;
 }
 </script>
 
 </body>
 </html>
+	
