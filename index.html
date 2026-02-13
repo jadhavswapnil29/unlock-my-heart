@@ -17,7 +17,7 @@ body {
     color: #fff;
 }
 
-/* ---------- PASSCODE ---------- */
+/* PASSCODE */
 #lockScreen {
     position: absolute;
     inset: 0;
@@ -50,7 +50,7 @@ body {
     box-shadow: 0 0 15px rgba(255,77,109,0.6);
 }
 
-/* ---------- ERROR + HINT ---------- */
+/* ERROR + HINT */
 #errorMsg, #hintMsg {
     position: fixed;
     left: 50%;
@@ -67,31 +67,20 @@ body {
 }
 
 #hintMsg {
-    position: fixed;
     bottom: 90px;
-    left: 50%;
-    transform: translateX(-50%);
-
-    min-width: 300px;      /* ⬅️ increased size */
+    min-width: 300px;
     max-width: 90%;
-    padding: 18px 26px;    /* ⬅️ more breathing room */
-
-    font-size: 20px;       /* ⬅️ bigger text */
+    padding: 18px 26px;
+    font-size: 20px;
     text-align: center;
     line-height: 1.4;
-
     background: rgba(255,255,255,0.15);
     backdrop-filter: blur(8px);
-
     border-radius: 28px;
     box-shadow: 0 0 22px rgba(255,105,180,0.6);
-
-    display: none;
-    z-index: 9999;
 }
 
-
-/* ---------- SHAKE ---------- */
+/* SHAKE */
 @keyframes shake {
     0% { transform: translateX(0); }
     25% { transform: translateX(-6px); }
@@ -101,29 +90,27 @@ body {
 }
 .shake { animation: shake 0.4s; }
 
-/* ---------- STORY ---------- */
+/* STORY */
 #story { display:none; height:100vh; }
+
 .slide {
     position: absolute;
     inset: 0;
-
-    background-size: cover;        /* ⬅️ fills full screen */
-    background-position: center;   /* ⬅️ keeps subject centered */
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
-
     width: 100%;
     height: 100vh;
-
     opacity: 0;
     transition: opacity 1s ease;
 }
-@media (max-width: 768px) {
-    .slide {
-        background-position: center top;
-    }
-}
-
 .slide.active { opacity:1; }
+
+.bg-video {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
 
 .overlay {
     position:absolute;
@@ -141,7 +128,7 @@ body {
     opacity:.7;
 }
 
-/* ---------- PROPOSAL ---------- */
+/* PROPOSAL */
 #proposal {
     display:none;
     position:absolute;
@@ -153,10 +140,7 @@ body {
     text-align:center;
 }
 
-.heart {
-    font-size:70px;
-    animation: beat 1.2s infinite;
-}
+.heart { font-size:70px; animation: beat 1.2s infinite; }
 @keyframes beat { 50% { transform:scale(1.2); } }
 
 .buttons {
@@ -166,26 +150,17 @@ body {
     position:relative;
 }
 
-button.yes {
-    background:#ff4d6d;
-    color:#fff;
+button.yes, button.no {
     border:none;
     padding:12px 28px;
     border-radius:30px;
     position:absolute;
-    left:0;
-}
-button.no {
-    background:#444;
     color:#fff;
-    border:none;
-    padding:12px 28px;
-    border-radius:30px;
-    position:absolute;
-    right:0;
 }
 
-/* ---------- EFFECTS ---------- */
+button.yes { background:#ff4d6d; left:0; }
+button.no { background:#444; right:0; }
+
 .confetti {
     position:fixed;
     width:8px;
@@ -195,18 +170,6 @@ button.no {
 }
 @keyframes fall {
     to { transform: translateY(110vh) rotate(720deg); opacity:0; }
-}
-
-.firework {
-    position:fixed;
-    width:6px;
-    height:6px;
-    background:gold;
-    border-radius:50%;
-    animation: explode 1.5s forwards;
-}
-@keyframes explode {
-    to { transform: translate(var(--x),var(--y)) scale(0); opacity:0; }
 }
 
 .name { font-size:42px; color:hotpink; }
@@ -219,23 +182,38 @@ button.no {
 <div id="errorMsg">Wrong code 💔</div>
 <div id="hintMsg">💡 Hint: Two birthdays, one heart (Mine + Your's)❤️</div>
 
-<!-- 🔒 LOCK -->
+<!-- LOCK -->
 <div id="lockScreen">
     <h1>🔒 Enter the secret code</h1>
     <input type="password" id="code" placeholder="❤️ ❤️ ❤️">
     <button id="unlockBtn" onclick="unlock()">Unlock</button>
 </div>
 
-<audio id="music" loop>
-<source src="https://cdn.pixabay.com/audio/2022/10/25/audio_946b5e58d1.mp3">
-</audio>
+<!-- Audio Player -->
+<audio id="slideMusic"></audio>
 
 <!-- STORY -->
 <div id="story" onclick="nextSlide()">
-    <div class="slide active" style="background-image:url('images/suppu_1.jpg')"></div>
-    <div class="slide" style="background-image:url('images/suppu_2.jpg')"></div>
-    <div class="slide" style="background-image:url('images/suppu_3.jpg')"></div>
-    <div class="slide" style="background-image:url('images/suppu_4.jpg')"></div>
+    <div class="slide active" style="background-image:url('images/suppu_5.jpeg')"></div>
+
+    <div class="slide">
+        <video autoplay muted loop playsinline class="bg-video">
+            <source src="images/suppu_6.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="slide">
+        <video autoplay muted loop playsinline class="bg-video">
+            <source src="images/suppu_7.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="slide">
+        <video autoplay muted loop playsinline class="bg-video">
+            <source src="images/suppu_8.mp4" type="video/mp4">
+        </video>
+    </div>
+
     <div class="overlay" id="text"></div>
     <div class="swipeHint">👉 Tap or Swipe</div>
 </div>
@@ -255,6 +233,24 @@ button.no {
 const PASSCODE = "2928";
 let attempts = 0;
 
+/* MUSIC LIST */
+const musicList = [
+  "audio/Tujhe_Prem_Majhla_Kalu_Lagle.mp3",
+  "audio/Hum_Mar_Jayenge.mp3",
+  "audio/Sundara.mp4",
+  "audio/Dooron_Dooron.mp3"
+];
+
+const slideMusic = document.getElementById("slideMusic");
+
+function playSlideMusic(i) {
+    slideMusic.pause();
+    slideMusic.currentTime = 0;
+    slideMusic.src = musicList[i];
+    slideMusic.play().catch(()=>{});
+}
+
+/* UNLOCK */
 function unlock() {
     const code = document.getElementById("code");
     const error = document.getElementById("errorMsg");
@@ -264,8 +260,7 @@ function unlock() {
     if (code.value === PASSCODE) {
         document.getElementById("lockScreen").style.display = "none";
         document.getElementById("story").style.display = "block";
-        document.getElementById("music").play();
-		hint.style.display="none"
+        playSlideMusic(0);
         return;
     }
 
@@ -296,12 +291,14 @@ function unlock() {
 /* STORY */
 const slides=document.querySelectorAll(".slide");
 const text=document.getElementById("text");
+
 const messages=[
 "Elegance, grace… and my whole heart. 💖",
 "With you, every step feels blessed. 🙏💫",
 "Your smile is my favorite celebration. 💛✨",
 "Always you. Forever us. 💍💕"
 ];
+
 let index=0;
 text.innerText=messages[0];
 
@@ -311,7 +308,9 @@ function nextSlide(){
         slides.forEach(s=>s.classList.remove("active"));
         slides[index].classList.add("active");
         text.innerText=messages[index];
+        playSlideMusic(index);
     } else {
+        slideMusic.pause();
         document.getElementById("story").style.display="none";
         document.getElementById("proposal").style.display="flex";
     }
@@ -352,4 +351,3 @@ function sayYes(){
 
 </body>
 </html>
-	
